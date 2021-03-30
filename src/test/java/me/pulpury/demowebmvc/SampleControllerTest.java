@@ -1,8 +1,9 @@
 package me.pulpury.demowebmvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -22,19 +23,20 @@ public class SampleControllerTest {
 	@Test
 	public void helloTest() throws Exception {
 		
-		mockMvc.perform(get("/hello"))
+		mockMvc.perform(get("/hello/taeju"))
 				.andDo(print())
-				.andExpect(status().isOk());
-//				.andExpect(status().isOk())
-//				.andExpect(content().string("hello"));
+				.andExpect(status().isOk())
+				.andExpect(content().string("hello taeju"))
+				.andExpect(handler().handlerType(SampleController.class))
+				.andExpect(handler().methodName("helloTaeju"));
 		
-		mockMvc.perform(put("/hello"))
-		.andDo(print())
-		.andExpect(status().isMethodNotAllowed());
+//		mockMvc.perform(get("/hi"))
+//		.andDo(print())
+//		.andExpect(status().isOk());
 		
-		mockMvc.perform(put("/hello"))
-		.andDo(print())
-		.andExpect(status().isMethodNotAllowed());
+//		mockMvc.perform(put("/hello"))
+//		.andDo(print())
+//		.andExpect(status().isMethodNotAllowed());
 	}
 
 }
