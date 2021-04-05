@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 // @Target을 사용하여 어디서 사용할 수 있는지 명시한다.
 
-// @Documented는 
+// @Documented는 문서화가 가능하다?
 @Documented
 @Target(ElementType.METHOD) 
 @Retention(RetentionPolicy.RUNTIME)
