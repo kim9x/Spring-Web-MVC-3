@@ -1,11 +1,16 @@
 package me.pulpury.demowebmvc;
 
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,30 +29,28 @@ public class SampleController {
 		return "/events/form"; 
 	}
 	
-	@PostMapping("/events")
+	// 이러한 형식으로 받을 수도 있다.
+	@PostMapping("/events/name/{name}")
 	@ResponseBody
-	public Event getEvent(
-			// '@RequestParam'을 제외하고 String name이런 식으로 생략 또한 가능하다..?
-			// 그러나 추천하지는 않음. 팀원들이 모두 다 Spring MVC에 익숙하지 않을 수도 있기 때문에
-			// 명시적으로 선호해주는 것이 좋다.
-			// 스타 개발자가 아닌 협업을 잘하는 개발자가 되자.
-			@RequestParam String name
-			, @RequestParam Integer limit
-			
-			// @RequestParam 또한 변수명을 맞춰주고 코드를 줄이거나
-			// @ReauestParma(value = "name")을 사용해서 아예 다른 변수(ex. nameValue) 등을 
-			// 사용할 수도 있다.
-//			, @RequestParam(value = "name", required = false, defaultValue = "taeju") String nameValue
-			
-			// Map으로 전달받고 event.setName(params.get("name"));
-			// 이런식으로 알고 있는 변수명으로 사용할 수도 있다.
-//			, @RequestParam Map<String, String> params
-			) {
-		Event event = new Event();
-		event.setName(name);
-		event.setLimit(limit);
-		logger.info("event", event);
-//		event.setName(params.get("name"));
+	// BindingResult bindingResult 앞에처럼 처리해주면 'bindingResult' 해당 변수에
+	// binding과 관련된 에러가 담겨져 온다.
+	// binding 관련에러(binding Exception)를 던져주는게 아니라 일단 담겨져 오
+	// 처리는 된다.(일단은..)
+	// '@ModelAttribute' 또한 생략 가능하다.
+	// 복합 타입의 경우 Spring Web Mvc가 알아서 @ModelAttribute가 붙어있는 것이라고 생각한다.
+	// @Valid는 그룹을 지정할 수 없다.
+	// @Validated는 class 등을 설정할 수 있다.(ex. @Validated(Event.ValidatedLimit.class))
+	// 물론 그냥 사용하게된다면 @Valid랑 동일하게도 사용 가능하다.
+	public Event getEvent(@Validated(Event.ValidatedName.class) @ModelAttribute Event event, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			 logger.info("==============================");
+			 bindingResult.getAllErrors().forEach(c -> {
+//				 System.out.println(c.toString());
+				 logger.info(c.toString());
+			 });
+			 logger.info("==============================");
+		}
+		
 		return event;
 		
 	}
