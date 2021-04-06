@@ -4,6 +4,8 @@ package me.pulpury.demowebmvc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,7 +15,14 @@ public class SampleController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	
+	@GetMapping("/events/form")
+	public String eventsForm(Model model) {
+		Event newEvent = new Event();
+		newEvent.setLimit(50);
+		
+		model.addAttribute("event", newEvent);
+		return "/events/form"; 
+	}
 	
 	@PostMapping("/events")
 	@ResponseBody
