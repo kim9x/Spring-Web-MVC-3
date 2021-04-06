@@ -5,15 +5,12 @@ import javax.validation.constraints.NotBlank;
 
 public class Event {
 	
-	interface ValidatedLimit {}
-	interface ValidatedName {}
-	
 	private Integer id;
 	
-	@NotBlank(groups = ValidatedName.class)
+	@NotBlank
 	private String name;
 	
-	@Min(value = 0, groups = ValidatedLimit.class)
+	@Min(0)
 	private Integer limit;
 
 	public Integer getId() {
