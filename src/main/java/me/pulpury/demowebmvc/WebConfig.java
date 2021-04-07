@@ -1,6 +1,7 @@
 package me.pulpury.demowebmvc;
 
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
@@ -15,6 +16,13 @@ public class WebConfig implements WebMvcConfigurer {
 		UrlPathHelper urlPathHelper = new UrlPathHelper();
 		urlPathHelper.setRemoveSemicolonContent(false);
 		configurer.setUrlPathHelper(urlPathHelper);
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// TODO Auto-generated method stub
+//		WebMvcConfigurer.super.addInterceptors(registry);
+		registry.addInterceptor(new VisitTimeInterceptor());
 	}
 	
 	

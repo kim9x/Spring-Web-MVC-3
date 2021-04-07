@@ -1,6 +1,7 @@
 package me.pulpury.demowebmvc;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +16,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
-@SessionAttributes({"event", "book"})
+//@SessionAttributes({"event", "book"})
 public class SampleController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -60,7 +62,12 @@ public class SampleController {
 	}
 	
 	@GetMapping("/events/list")
-	public String getEvents(Model model) {
+//	public String getEvents(Model model, @SessionAttribute LocalDateTime visitTime) {
+	public String getEvents(Model model, HttpSession httpSession) {
+//		logger.info("{}", visitTime);
+		LocalDateTime visitTime = (LocalDateTime) httpSession.getAttribute("visitTime");
+		logger.info("{}", visitTime);
+		
 		Event event = new Event();
 		event.setName("spring");
 		event.setLimit(10);
