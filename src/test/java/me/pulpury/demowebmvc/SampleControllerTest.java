@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,19 @@ public class SampleControllerTest {
 			ModelAndView mav = result.andReturn().getModelAndView();
 			Map<String, Object> model = mav.getModel();
 			System.out.println(model.size());
+	}
+	
+	@Test
+	public void getEvents() throws Exception {
+		Event newEvent = new Event();
+		newEvent.setName("Winter is coming.");
+		newEvent.setLimit(10000);
+		
+		mockMvc.perform(get("/events/list")
+				.sessionAttr("visitTime", LocalDateTime.now())
+				.flashAttr("newEvent", newEvent))
+					.andDo(print())
+					.andExpect(status().isOk());
 	}
 
 }

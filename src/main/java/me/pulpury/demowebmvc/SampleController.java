@@ -1,7 +1,6 @@
 package me.pulpury.demowebmvc;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -66,18 +62,16 @@ public class SampleController {
 		
 		sessionStatus.setComplete();
 		
-		// Model의 Attribute에 넣어두면 spring Web Mvc는 자동적으로 
-		// 리다이렉트 되는 곳의 쿼리 파라미터로 추가가되지만,
-		// Spring boot는 자동적으로 꺼져있다.
-		// application.properties에서
-		// 'spring.mvc.ignore-default-model-on-redirect=false' 설정해주면 사용가능.
-//		model.addAttribute("name", event.getName());
-//		model.addAttribute("limit", event.getLimit());
+		// addAttribute로 전달되려면 String으로 변환이 가능한 값이여야 한다.
+		// 도메인 오브젝트 자체를 전달할 순 없다.
+//		attributes.addAttribute("name", event.getName());
+//		attributes.addAttribute("limit", event.getLimit());
 		
-		// 아래처럼 사용하면 주고싶은 값만 ?뒤의 쿼리파타미터로 넘겨줄 수 있다.
-		// ex) ?name=event.getName()
-		attributes.addAttribute("name", event.getName());
-		attributes.addAttribute("limit", event.getLimit());
+		// httpSession을 통해 전달되며
+		// redirect 된 곳에서 사용되면 자동적으로 사라진다?!
+		// => 1회성이다. 그래서 flash라는 단어가 붙어진듯.
+		// 경로등이 보이지 않아 좋다.
+		attributes.addFlashAttribute("newEvent", event);
 		
 		return "redirect:/events/list";
 		
@@ -110,12 +104,23 @@ public class SampleController {
 //		newEvent.setLimit(event.getLimit());
 		
 		Event spring = new Event();
-		event.setName("spring");
-		event.setLimit(10);
+		spring.setName("spring");
+		spring.setLimit(10);
+		
+		Object newEvent = model.asMap().get("newEvent");
 		
 		List<Event> eventList = new ArrayList<>();
 		eventList.add(spring);
+		
+		// @ModelAttribute로 받을 수도 있
 		eventList.add(event);
+		
+		// Model로도 받을 수 있다.
+		// Object newEvent = model.asMap().get("newEvent");
+		model.addAttribute(newEvent);
+		
+		
+		
 //		eventList.add(newEvent);
 		
 		model.addAttribute("eventList", eventList);
