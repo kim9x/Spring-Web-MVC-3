@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SessionAttributes({"event", "book"})
-public class SampleController {
+public class EventController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	

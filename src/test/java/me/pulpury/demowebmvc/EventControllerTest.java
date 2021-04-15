@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-public class SampleControllerTest {
+public class EventControllerTest {
 	
 	@Autowired
 	MockMvc mockMvc;
