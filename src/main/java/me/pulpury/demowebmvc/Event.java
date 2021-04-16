@@ -7,7 +7,7 @@ public class Event {
 	
 	private Integer id;
 	
-//	@NotBlank
+	@NotBlank
 	private String name;
 	
 	@Min(0)

@@ -31,7 +31,7 @@ public class EventApiTest {
 	public void createEvent()  throws Exception {
 		Event event = new Event();
 		event.setName("taeju");
-		event.setLimit(20);
+		event.setLimit(-20);
 		
 		String json = objectMapper.writeValueAsString(event);
 		
@@ -39,9 +39,9 @@ public class EventApiTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json))
 				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("name").value("taeju"))
-				.andExpect(jsonPath("limit").value(20));
+				.andExpect(status().isBadRequest());
+//				.andExpect(jsonPath("name").value("taeju"))
+//				.andExpect(jsonPath("limit").value(20));
 	}
 
 }
