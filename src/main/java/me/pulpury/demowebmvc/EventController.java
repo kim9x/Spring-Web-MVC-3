@@ -35,11 +35,12 @@ public class EventController {
 //		return "error";
 //	}
 	
-	@ExceptionHandler({EventException.class, RuntimeException.class})
-	public String eventErrorHandler(RuntimeException exception, Model model) {
-		model.addAttribute("message", "runtime error2");
-		return "error";
-	}
+	// 해당 컨트롤러 안에서 처리 됨.
+//	@ExceptionHandler({EventException.class, RuntimeException.class})
+//	public String eventErrorHandler(RuntimeException exception, Model model) {
+//		model.addAttribute("message", "runtime error2");
+//		return "error";
+//	}
 	
 	
 //	@ExceptionHandler
@@ -55,15 +56,16 @@ public class EventController {
 	// initBinder에 'event' 같이 value를 주면
 	// 'event' 이름의 modelAttribute를 binding 받을 때에만
 	// 해당 @InitBinder를 사용하도록 설정할 수 있다.
-	@InitBinder
-	// WebDataBinder를 파라미터로 받을 수 있다.
-	public void initEventBinder(WebDataBinder webDataBinder) {
-		// 받고 싶지 않은 field를 설정 가능
-		// form에서 id를 받더라도 걸러내줌. 
-		webDataBinder.setDisallowedFields("id");
-//		webDataBinder.addValidators(new EventValidator());
-		// Validator를 bean으로 등록 후 주입을 받아서 사용할 수도 있다.
-	}
+	// 해당 컨트롤러 안에서 처리됨.
+//	@InitBinder
+//	// WebDataBinder를 파라미터로 받을 수 있다.
+//	public void initEventBinder(WebDataBinder webDataBinder) {
+//		// 받고 싶지 않은 field를 설정 가능
+//		// form에서 id를 받더라도 걸러내줌. 
+//		webDataBinder.setDisallowedFields("id");
+////		webDataBinder.addValidators(new EventValidator());
+//		// Validator를 bean으로 등록 후 주입을 받아서 사용할 수도 있다.
+//	}
 	
 //	@ModelAttribute
 //	public void categories(Model model) {
