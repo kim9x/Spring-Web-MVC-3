@@ -1,7 +1,12 @@
 package me.pulpury.demowebmvc;
 
+import java.time.LocalDate;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 public class Event {
 	
@@ -12,6 +17,10 @@ public class Event {
 	
 	@Min(0)
 	private Integer limit;
+	
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(iso = ISO.DATE)
+	private LocalDate startDate;
 
 	public Integer getId() {
 		return id;
@@ -35,5 +44,13 @@ public class Event {
 
 	public void setLimit(Integer limit) {
 		this.limit = limit;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 }
