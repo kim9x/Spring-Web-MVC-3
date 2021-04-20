@@ -65,7 +65,8 @@ public class EventControllerTest {
 				.sessionAttr("visitTime", LocalDateTime.now())
 				.flashAttr("newEvent", newEvent))
 					.andDo(print())
-					.andExpect(status().isOk());
+					.andExpect(status().isOk())
+					.andExpect(model().attributeExists("categories"));
 	}
 
 }

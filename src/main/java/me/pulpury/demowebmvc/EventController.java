@@ -25,11 +25,40 @@ public class EventController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@GetMapping("/events/form/name")
-	public String eventsFormName(Model model, HttpSession httpSession) {
-		model.addAttribute("event", new Event());
-		return "/events/form-name"; 
+	@ModelAttribute
+	public void categories(Model model) {
+		model.addAttribute("categories", List.of("study", "seminar", "hobby", "social"));
 	}
+	
+//	@ModelAttribute
+//	public List<String> categories(Model model) {
+//		return List.of("study", "seminar", "hobby", "social");
+//	}
+	
+//	@GetMapping("/events/form/name")
+//	public String eventsFormName(Model model, HttpSession httpSession) {
+//		model.addAttribute("event", new Event());
+//		return "/events/form-name"; 
+//	}
+	
+	// 보통 이렇게 사용한다.
+	@GetMapping("/events/form/name")  
+	@ModelAttribute
+	public String eventsFormName(Model model) {
+		model.addAttribute("event", new Event());
+		return "/evenet/form-name";
+	}
+	
+	@GetMapping("/events/form/name")  
+	@ModelAttribute
+	// @ModelAttribute 생략 가능.
+	// String으로 return하지 않고(view name 생략)
+	// 요청 값에 맞는 view를 찾아준다.(RequestToViewNameTranslator 인터페이스 사용됨.)
+	// 
+//	public Event eventsFormName() {
+//		return new Event();
+//	}
+	
 	@PostMapping("/events/form/name")
 	public String eventsFormNameSubmit(
 			@Validated @ModelAttribute Event event
