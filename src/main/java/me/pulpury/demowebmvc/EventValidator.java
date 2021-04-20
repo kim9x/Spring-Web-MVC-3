@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 // Validator 자체를 bean으로 등록할 수 있다.
-@Component
+//@Component
 public class EventValidator implements Validator {
 
 	@Override

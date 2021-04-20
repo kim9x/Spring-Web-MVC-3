@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,13 +24,32 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-//@SessionAttributes({"event", "book"})
+@SessionAttributes({"event", "book"})
 public class EventController {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
-	EventValidator eventValidator;
+//	@ExceptionHandler
+//	public String eventErrorHandler(EventException exception, Model model) {
+//		model.addAttribute("message", "event error");
+//		return "error";
+//	}
+	
+	@ExceptionHandler({EventException.class, RuntimeException.class})
+	public String eventErrorHandler(RuntimeException exception, Model model) {
+		model.addAttribute("message", "runtime error2");
+		return "error";
+	}
+	
+	
+//	@ExceptionHandler
+//	public String runtimeErrorHandler(RuntimeException exception, Model model) {
+//		model.addAttribute("message", "runtime error");
+//		return "error";
+//	}
+	
+//	@Autowired
+//	EventValidator eventValidator;
 	
 	// @InitBinder("event")
 	// initBinder에 'event' 같이 value를 주면
@@ -57,8 +77,13 @@ public class EventController {
 	
 	@GetMapping("/events/form/name")
 	public String eventsFormName(Model model, HttpSession httpSession) {
-		model.addAttribute("event", new Event());
-		return "/events/form-name"; 
+		
+		// 가장 구체적인 에러를 발생시킨다.
+		// 따라서 eventErrorHandler()가 호출됐었음.
+		throw new EventException();
+		
+//		model.addAttribute("event", new Event());
+//		return "/events/form-name"; 
 	}
 	
 	// 보통 이렇게 사용한다.
@@ -90,7 +115,7 @@ public class EventController {
 		}
 		
 		// 이렇게 사용할꺼면 EventValidator에서 OverRiding해서 사용할 필요가 없어진다.
-		eventValidator.validate(event, bindingResult);
+//		eventValidator.validate(event, bindingResult);
 		
 //		model.addAttribute("event", event);
 		return "redirect:/events/form/limit";
